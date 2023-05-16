@@ -39,7 +39,7 @@ tree = discord.app_commands.CommandTree(client)
 
 @client.event
 async def on_ready():
-    logger.info(f"We have logged in as {client.user}. Invite URL: {BOT_INVITE_URL}")
+    logger.info(f"Yume est la ! {client.user} ready ;) . Invite URL: {BOT_INVITE_URL}")
     completion.MY_BOT_NAME = client.user.name
     completion.MY_BOT_EXAMPLE_CONVOS = []
     for c in EXAMPLE_CONVOS:
@@ -54,7 +54,7 @@ async def on_ready():
 
 
 # /chat message:
-@tree.command(name="chat", description="Create a new thread for conversation")
+@tree.command(name="chat", description="Crée une nouvelle conversation avec yume")
 @discord.app_commands.checks.has_permissions(send_messages=True)
 @discord.app_commands.checks.has_permissions(view_channel=True)
 @discord.app_commands.checks.bot_has_permissions(send_messages=True)
@@ -71,7 +71,7 @@ async def chat_command(int: discord.Interaction, message: str):
             return
 
         user = int.user
-        logger.info(f"Chat command by {user} {message[:20]}")
+        logger.info(f"Crée par {user} {message[:20]}")
         try:
             # moderate the message
             flagged_str, blocked_str = moderate_message(message=message, user=user)
@@ -84,13 +84,13 @@ async def chat_command(int: discord.Interaction, message: str):
             if len(blocked_str) > 0:
                 # message was blocked
                 await int.response.send_message(
-                    f"Your prompt has been blocked by moderation.\n{message}",
+                    f"Désolé mais votre discussion est innaproprié. \n{message}",
                     ephemeral=True,
                 )
                 return
 
             embed = discord.Embed(
-                description=f"<@{user.id}> wants to chat! 🤖💬",
+                description=f"<@{user.id}> veut distuter ! 🤖💬",
                 color=discord.Color.green(),
             )
             embed.add_field(name=user.name, value=message)
@@ -98,7 +98,7 @@ async def chat_command(int: discord.Interaction, message: str):
             if len(flagged_str) > 0:
                 # message was flagged
                 embed.color = discord.Color.yellow()
-                embed.title = "⚠️ This prompt was flagged by moderation."
+                embed.title = "⚠️ Désolé mais votre message est innaproprié."
 
             await int.response.send_message(embed=embed)
             response = await int.original_response()
@@ -113,7 +113,7 @@ async def chat_command(int: discord.Interaction, message: str):
         except Exception as e:
             logger.exception(e)
             await int.response.send_message(
-                f"Failed to start chat {str(e)}", ephemeral=True
+                f"Woops je n'arrive pas a créer la discussion {str(e)}", ephemeral=True
             )
             return
 
@@ -137,7 +137,7 @@ async def chat_command(int: discord.Interaction, message: str):
     except Exception as e:
         logger.exception(e)
         await int.response.send_message(
-            f"Failed to start chat {str(e)}", ephemeral=True
+            f"Woops je n'arrive pas a créer la discussion {str(e)}", ephemeral=True
         )
 
 
@@ -192,7 +192,7 @@ async def on_message(message: DiscordMessage):
                 await message.delete()
                 await thread.send(
                     embed=discord.Embed(
-                        description=f"❌ **{message.author}'s message has been deleted by moderation.**",
+                        description=f"❌ **le message de {message.author} a été suprimé**",
                         color=discord.Color.red(),
                     )
                 )
@@ -215,7 +215,7 @@ async def on_message(message: DiscordMessage):
         if len(flagged_str) > 0:
             await thread.send(
                 embed=discord.Embed(
-                    description=f"⚠️ **{message.author}'s message has been flagged by moderation.**",
+                    description=f"⚠️ **le message de {message.author} est innaproprié **",
                     color=discord.Color.yellow(),
                 )
             )

@@ -50,7 +50,7 @@ async def close_thread(thread: discord.Thread):
     await thread.edit(name=INACTIVATE_THREAD_PREFIX)
     await thread.send(
         embed=discord.Embed(
-            description="**Thread closed** - Context limit reached, closing...",
+            description="**Fin de la discussion** - Désolé mais... je suis un peu fatiqué re crée une discussion ! ",
             color=discord.Color.blue(),
         )
     )
@@ -60,11 +60,11 @@ async def close_thread(thread: discord.Thread):
 def should_block(guild: Optional[discord.Guild]) -> bool:
     if guild is None:
         # dm's not supported
-        logger.info(f"DM not supported")
+        logger.info(f"Oh ? on m'a envoyé un mp mais... je ne peut pas le lire.")
         return True
 
     if guild.id and guild.id not in ALLOWED_SERVER_IDS:
         # not allowed in this server
-        logger.info(f"Guild {guild} not allowed")
+        logger.info(f"une personne de {guild} m'a appelé mais il n'a pas l'autorisation si vous voulez ajouter le server ajoutez son ID dans le .env ;) ")
         return True
     return False

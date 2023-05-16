@@ -79,7 +79,7 @@ async def generate_completion_response(
             status=CompletionResult.OK, reply_text=reply, status_text=None
         )
     except openai.error.InvalidRequestError as e:
-        if "This model's maximum context length" in e.user_message:
+        if "limite maximum de contexte du model" in e.user_message:
             return CompletionData(
                 status=CompletionResult.TOO_LONG, reply_text=None, status_text=str(e)
             )
@@ -108,7 +108,7 @@ async def process_response(
         if not reply_text:
             sent_message = await thread.send(
                 embed=discord.Embed(
-                    description=f"**Invalid response** - empty response",
+                    description=f"**Réponse Incorrecte** - Réponse vide :(",
                     color=discord.Color.yellow(),
                 )
             )
@@ -127,7 +127,7 @@ async def process_response(
 
             await thread.send(
                 embed=discord.Embed(
-                    description=f"⚠️ **This conversation has been flagged by moderation.**",
+                    description=f"⚠️ **Ohh je crois je ne peut pas parler de ca désolé**",
                     color=discord.Color.yellow(),
                 )
             )
@@ -141,7 +141,7 @@ async def process_response(
 
         await thread.send(
             embed=discord.Embed(
-                description=f"❌ **The response has been blocked by moderation.**",
+                description=f"❌ **désolé mais ma réponse est bloqué ^^'**",
                 color=discord.Color.red(),
             )
         )
@@ -150,14 +150,14 @@ async def process_response(
     elif status is CompletionResult.INVALID_REQUEST:
         await thread.send(
             embed=discord.Embed(
-                description=f"**Invalid request** - {status_text}",
+                description=f"**Requéte invalide** - {status_text}",
                 color=discord.Color.yellow(),
             )
         )
     else:
         await thread.send(
             embed=discord.Embed(
-                description=f"**Error** - {status_text}",
+                description=f"**humm il y a un probléme** - {status_text}",
                 color=discord.Color.yellow(),
             )
         )
